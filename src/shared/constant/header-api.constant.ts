@@ -1,0 +1,6 @@
+export const HEADERS = {
+  header: {
+    "Content-Type": "application/json",
+  },
+  //   "Content-Type": "application/json",
+};

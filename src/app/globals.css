@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-inter: var(--font-inter);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -115,6 +115,139 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+/* Custom Style */
+
+@layer utilities {
+  /* Create a new utility class named .content-auto */
+  .border-1\.5 {
+    border-width: 1.5px;
+  }
+  .shadow-custom {
+    box-shadow: 0px 6px 13px 4px rgba(0, 0, 0, 0.1);
+  }
+  .custom-dash {
+    border-style: dashed;
+    border-width: 1px;
+    border-color: #bedbff;
+    border-image: repeating-linear-gradient(
+        to right,
+        #bedbff 0,
+        #bedbff 5px,
+        transparent 5px,
+        transparent 10px
+      )
+      1;
+  }
+
+  .hover\:custom-dash:hover {
+    border-style: dashed;
+    border-width: 1px;
+    border-color: #bedbff;
+    border-image: repeating-linear-gradient(
+        to right,
+        #bedbff 0,
+        #bedbff 5px,
+        transparent 5px,
+        transparent 10px
+      )
+      1;
+  }
+
+  .result-border {
+    border: 1px dashed #bedbff;
+    border-image: repeating-linear-gradient(
+        90deg,
+        #bedbff 0,
+        #bedbff 4px,
+        transparent 4px,
+        transparent 8px
+      )
+      1;
+  }
+
+  .answers::-webkit-scrollbar {
+    width: 7px;
+    /* height: 291px; */
+  }
+  .answers::-webkit-scrollbar-track {
+    background: #f9fafb;
+  }
+  .answers::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    /* height: 75px; */
+  }
+}
+
+.tran {
+  transition: 0.3s ease-in-out !important;
+}
+/* .start-exam {
+  transition: 0.5s ease-in-out !important;
+} */
+.exam-item:hover .start-exam {
+  right: 10px !important;
+}
+.hover\:custom-border-dash:hover {
+  border-style: dashed;
+  border-width: 1px;
+  border-color: #bedbff;
+  border-image: repeating-linear-gradient(
+      to right,
+      #bedbff 0,
+      #bedbff 5px,
+      transparent 5px,
+      transparent 10px
+    )
+    1;
+}
+
+.s::before {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border-width: 13px;
+  border-color: red transparent transparent;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* h1 {
+  font-family: var(--font-inter) !important;
+} */
+.font-geist-mono {
+  font-family: var(--font-mono) !important;
+}
+
+.layout-back-ground {
+  background: linear-gradient(135deg, #e6f0ff, #cce0ff);
+}
+
+.page-left::before,
+.page-left::after {
+  content: "";
+  position: absolute;
+  width: 16rem;
+  height: 16rem;
+  background-color: #155dfc;
+  border-radius: 100%;
+}
+.page-left::before {
+  right: 0;
+  top: 0;
+}
+.page-left::after {
+  left: 0;
+  bottom: 0;
+}
+
+.PhoneInput input:focus {
+  border-radius: 0 !important;
+  border: 1px solid #155dfc !important;
+  outline: none !important;
 }
 
 @layer base {
