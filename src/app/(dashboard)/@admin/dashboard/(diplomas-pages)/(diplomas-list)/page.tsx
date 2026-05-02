@@ -18,7 +18,9 @@ export default function DiplomasListPage() {
   // console.log(immutability, "ssssssss");
 
   // State For Diploma Taple Sort
-  const [sortBy, setSortBy] = useState<"title" | "createdAt">("createdAt");
+  const [sortBy, setSortBy] = useState<"title" | "createdAt" | "questions">(
+    "createdAt",
+  );
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   // Get Diplomas Query

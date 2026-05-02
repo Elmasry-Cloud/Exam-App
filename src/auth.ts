@@ -43,8 +43,8 @@ export const authOptions: NextAuthOptions = {
         token.user = user.user;
       }
       if (trigger === "update" && session) {
-        console.log(session, "sessionsssssssssssssss");
-        console.log(user, "user");
+        // console.log(session, "sessionsssssssssssssss");
+        // console.log(user, "user");
         token.user = session.user;
         token.token = session.token;
       }

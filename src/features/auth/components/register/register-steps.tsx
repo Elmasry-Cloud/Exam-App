@@ -46,7 +46,7 @@ export default function RegisterSteps() {
     ) {
       submitAccData(allAccountData as registerFields, {
         onSuccess: (data) => {
-          console.log(data?.message);
+          // console.log(data?.message);
           router.push("/login");
         },
       });

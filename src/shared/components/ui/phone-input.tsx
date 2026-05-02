@@ -28,7 +28,8 @@ type PhoneInputProps = Omit<
   "onChange" | "value"
 > &
   Omit<RPNInput.Props<typeof RPNInput.default>, "onChange"> & {
-    onChange?: (value: RPNInput.Value) => void;
+    // onChange?: (value: RPNInput.Value) => void;
+    onChange?: (value: RPNInput.Value | undefined) => void;
   };
 
 const PhoneInput = React.forwardRef<
@@ -42,7 +43,9 @@ const PhoneInput = React.forwardRef<
       flagComponent={FlagComponent}
       countrySelectComponent={CountrySelect}
       inputComponent={InputComponent}
-      onChange={(value) => onChange?.(value === undefined ? "" : value)}
+      // onChange={(value) => onChange?.(value === undefined ? "" : value)}
+      // onChange={(value) => onChange?.((value ?? "") as RPNInput.Value)}
+      onChange={(value) => onChange?.(value)}
       {...props}
     />
   );
@@ -88,10 +91,10 @@ const CountrySelect = ({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
+      {/* <PopoverTrigger asChild>
+        <button
           type="button"
-          variant="outline"
+          // variant="outline"
           className={cn(
             "flex items-center gap-2 border border-gray-200 px-2.5 h-11.5 text-sm font-normal rounded-none border-r-0 outline-0 focus-visible:ring-1 focus-visible:ring-blue-600",
           )}
@@ -104,7 +107,23 @@ const CountrySelect = ({
               disabled ? "hidden" : "opacity-100",
             )}
           />
-        </Button>
+        </button>
+      </PopoverTrigger> */}
+      <PopoverTrigger
+        type="button"
+        className={cn(
+          "flex items-center gap-2 border border-gray-200 px-2.5 h-11.5 text-sm font-normal rounded-none border-r-0 outline-0 focus-visible:ring-1 focus-visible:ring-blue-600",
+          disabled && "opacity-50 cursor-not-allowed",
+        )}
+        disabled={disabled}
+      >
+        <FlagComponent country={value} countryName={value} />
+        <ChevronDown
+          className={cn(
+            "-mr-2 h-4 w-4 opacity-50",
+            disabled ? "hidden" : "opacity-100",
+          )}
+        />
       </PopoverTrigger>
       <PopoverContent className="w-75 p-0">
         <Command>

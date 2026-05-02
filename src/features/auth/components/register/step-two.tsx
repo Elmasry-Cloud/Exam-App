@@ -14,8 +14,8 @@ interface IStepTwoInfo {
   setSuccess?: Dispatch<SetStateAction<boolean>>;
   setFocusInput?: Dispatch<SetStateAction<boolean>>;
   lightbg?: boolean;
-  change: string;
-  setShowChangeEmail: Dispatch<SetStateAction<boolean>>;
+  change?: string;
+  setShowChangeEmail?: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function StepTwoRegister({
@@ -55,6 +55,7 @@ export default function StepTwoRegister({
           },
         },
       );
+      return;
     }
 
     // Change Email

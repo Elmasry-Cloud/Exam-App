@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { User } from "next-auth";
-import { IUser } from "./user";
+import { IUserData } from "./user";
 
 declare module "next-auth" {
   /**
@@ -9,7 +9,7 @@ declare module "next-auth" {
    * or the second parameter of the `session` callback, when using a database.
    */
   interface User {
-    user: IUser;
+    user: IUserData;
     token: string;
   }
   /**
@@ -17,7 +17,7 @@ declare module "next-auth" {
    */
   // type Session = IUser;
   interface Session {
-    user: IUser;
+    user: IUserData;
   }
 }
 
@@ -25,7 +25,7 @@ declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
   // type JWT = User;
   interface JWT {
-    user: IUser;
+    user: IUserData;
     token: string;
   }
 }

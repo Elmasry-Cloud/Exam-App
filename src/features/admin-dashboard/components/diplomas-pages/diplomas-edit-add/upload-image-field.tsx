@@ -27,7 +27,7 @@ export default function UploadImageField({
   image,
 }: {
   height?: string;
-  image: string | null;
+  image?: string | null;
 }) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);

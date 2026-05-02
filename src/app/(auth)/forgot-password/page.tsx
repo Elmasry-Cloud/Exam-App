@@ -2,10 +2,11 @@
 import StepTwoForgotPass from "@/features/auth/components/forgot-password/step-two-forgot";
 import Header from "@/features/auth/components/header";
 import StepOneForgot from "@/features/auth/components/forgot-password/step-one";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
+  // console.log(email);
 
   const [Succes, setSucces] = useState(false);
   const [focusInput, setFocusInput] = useState(false);
@@ -26,30 +27,32 @@ export default function ForgotPassword() {
   return (
     <main className="flex flex-col items-center justify-center">
       <div className="w-full max-w-113">
-        {!Succes ? (
-          <>
-            {/* Header Text */}
-            <Header headerInfo={"Forgot Password"} />
+        <Suspense fallback={<div>Loading...</div>}>
+          {!Succes ? (
+            <>
+              {/* Header Text */}
+              <Header headerInfo={"Forgot Password"} />
 
-            {/* Forgot Password Step One */}
-            <StepOneForgot
-              email={email}
-              setEmail={setEmail}
-              ref={refInput}
-              setSucces={setSucces}
-            />
-          </>
-        ) : (
-          <>
-            {/* Forgot Password Step Two */}
-            <StepTwoForgotPass
-              ref={refButtonBack}
-              emailValue={email}
-              setSucces={setSucces}
-              setFocusInput={setFocusInput}
-            />
-          </>
-        )}
+              {/* Forgot Password Step One */}
+              <StepOneForgot
+                emailValue={email}
+                setEmail={setEmail}
+                ref={refInput}
+                setSucces={setSucces}
+              />
+            </>
+          ) : (
+            <>
+              {/* Forgot Password Step Two */}
+              <StepTwoForgotPass
+                ref={refButtonBack}
+                emailValue={email}
+                setSucces={setSucces}
+                setFocusInput={setFocusInput}
+              />
+            </>
+          )}
+        </Suspense>
       </div>
     </main>
   );

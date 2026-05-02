@@ -5,6 +5,8 @@ import { Button } from "@/shared/components/ui/button";
 import { FolderSearch, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import SkilitonResults from "./skiliton-results";
+import { ApiRes } from "@/shared/types/api-res";
+import { IExamSubmissionData } from "../../types/results";
 
 interface IProps {
   resultId: string;
@@ -13,7 +15,9 @@ interface IProps {
 }
 
 export default function ExamResult({ resultId, restart, diplomaId }: IProps) {
-  const [resultData, setResultData] = useState();
+  const [resultData, setResultData] = useState<IExamSubmissionData | null>(
+    null,
+  );
   const [correctAnswer, setCorrectAnswer] = useState(0);
   const [worngAnswer, setWorngAnswer] = useState(0);
   // console.log(resultId);
@@ -21,13 +25,18 @@ export default function ExamResult({ resultId, restart, diplomaId }: IProps) {
   // console.log(data?.user.id);
   async function fetchData(resultId: string) {
     // console.log(resultId);
-    const res = await fetch(`/api/result-exam/${resultId}`);
-    const data = await res.json();
-    // console.log(data);
-    setCorrectAnswer(data?.payload?.submission.correctAnswers);
-    setWorngAnswer(data?.payload?.submission.wrongAnswers);
 
-    setResultData(data);
+    // Get response data
+    const res = await fetch(`/api/result-exam/${resultId}`);
+    if (!res.ok) return;
+
+    // get Final data
+    const data: ApiRes<IExamSubmissionData> = await res.json();
+    // console.log(data);
+    if (!data.status) return;
+    setCorrectAnswer(data.payload.submission.correctAnswers);
+    setWorngAnswer(data.payload.submission.wrongAnswers);
+    setResultData(data.payload);
   }
   useEffect(() => {
     fetchData(resultId);
@@ -63,7 +72,7 @@ export default function ExamResult({ resultId, restart, diplomaId }: IProps) {
             </div>
             <div className="answers result-border p-1.5 h-128.5 w-full overflow-y-scroll flex flex-col gap-2.5">
               <div className="que-items p-2.5 flex flex-col gap-5">
-                {resultData?.payload?.analytics
+                {resultData?.analytics
                   .filter((item) => item.isCorrect !== true)
                   .map((item) => (
                     <div

@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 
 import {
@@ -15,41 +16,48 @@ import { ChevronRight } from "lucide-react";
 import { forgotField } from "../../types/forgot";
 import { forgotSchema } from "../../schemas/forgot-password.schema";
 import useForgotPassword from "../../hooks/use-forget";
+import { useMemo } from "react";
 
 // props type
 interface ITextPinfo {
-  setEmail: (value: forgotField) => void;
+  setEmail?: (value: string) => void;
   setSucces: (value: boolean) => void;
   ref: React.ForwardedRef<HTMLInputElement>;
-  email: forgotField;
+  emailValue: string;
 }
 
 export default function StepOneForgot({
   setEmail,
-  email,
+  emailValue,
   ref,
   setSucces,
 }: ITextPinfo) {
   const { isPending, forgotPassword } = useForgotPassword();
 
+  const redirectUrl = useMemo(() => {
+    if (typeof window === "undefined") return "";
+    return `${window.location.origin}/reset-password`;
+  }, []);
+
   // Form
   const form = useForm<forgotField>({
     resolver: zodResolver(forgotSchema),
     defaultValues: {
-      email: email.email,
-      redirectUrl: `${window.location.origin}/reset-password`,
+      email: emailValue,
+      // redirectUrl: `${window.location.origin}/reset-password`,
+      redirectUrl: redirectUrl,
     },
   });
 
   // Sub fun
-  const onSubmit: SubmitHandler<forgotField> = (value) => {
-    // console.log(value);
+  const onSubmit: SubmitHandler<forgotField> = (values) => {
+    // console.log(values);
     // console.log("sub");
-    forgotPassword(value, {
+    forgotPassword(values, {
       onSuccess: () => {
         // console.log("suc");
         setSucces(true);
-        setEmail(value);
+        setEmail && setEmail(values.email);
       },
       onError: () => {
         setSucces(false);

@@ -18,7 +18,8 @@ type FormData = z.infer<typeof FormSchema>;
 
 interface IPhone {
   phone?: string;
-  setPhone?: (value: string) => void;
+  // setPhone?: (value: string) => void;
+  setPhone?: (value: string | undefined) => void;
   // updatePhone?: (value: string) => void;
   accountLabelSize?: string;
   payload?: string;
@@ -38,7 +39,8 @@ export default function PhoneNumber({
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(FormSchema),
-    defaultValues: { phone: payload ? payload : "" },
+    // defaultValues: { phone: payload ? payload : "" },
+    defaultValues: { phone: payload ?? "" },
     // defaultValues: { phone: "+201012345678" },
   });
 
@@ -48,7 +50,7 @@ export default function PhoneNumber({
 
   return (
     <div className={`relative`}>
-      <div
+      <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col space-y-3"
       >
@@ -70,11 +72,15 @@ export default function PhoneNumber({
                 id="phone"
                 // defaultValue={payload && payload?.user.phone}
                 // defaultValue={payload?.user.phone}
-                // value={field.value}
-                value={phone}
+                value={field.value}
+                // value={phone}
                 // onChange={field.onChange}
                 suppressHydrationWarning
-                onChange={(value) => setPhone && setPhone(value)}
+                // onChange={(value) => setPhone && setPhone(value)}
+                onChange={(value) => {
+                  field.onChange(value ?? "");
+                  setPhone?.(value ?? "");
+                }}
                 placeholder="1012345678"
                 defaultCountry="EG"
                 international
@@ -86,7 +92,7 @@ export default function PhoneNumber({
             <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
           )}
         </div>
-      </div>
+      </form>
     </div>
   );
 }

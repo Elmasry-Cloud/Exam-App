@@ -14,20 +14,23 @@ export default async function DiplomasQuestions({
     <>
       <BreadcrumbBasicDiplomas
         href={`/diplomas/${diplomaId}`}
-        text={diplomaTitle}
-        titleExam={title}
+        text={diplomaTitle as string}
+        titleExam={title as string}
       />
       <main className="p-6">
-        <DiplomasHeader text={title} hrefBack={`/diplomas/${diplomaId}`}>
+        <DiplomasHeader
+          text={title as string}
+          hrefBack={`/diplomas/${diplomaId}`}
+        >
           <CircleQuestionMark size={45} />
         </DiplomasHeader>
         {/* <div>questionsPageId: {id}</div> */}
         <QuestionsInfo
           id={id}
-          title={diplomaTitle}
-          titleExam={title}
-          examDuration={examDuration}
-          diplomaId={diplomaId}
+          title={diplomaTitle as string}
+          titleExam={title as string}
+          examDuration={examDuration as string}
+          diplomaId={diplomaId as string}
         />
       </main>
     </>

@@ -31,7 +31,7 @@ import {
 } from "@/features/user-dashboard/types/diplomas";
 import { ApiRes } from "@/shared/types/api-res";
 import useAddExam from "@/features/admin-dashboard/hooks/use-add-exam";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function ExamsAddContent({ formId }: { formId: string }) {
@@ -39,6 +39,9 @@ export default function ExamsAddContent({ formId }: { formId: string }) {
   const [data, setData] = useState<IDiplomaData[] | null>(null);
 
   const queryClient = useQueryClient();
+
+  // Router
+  const router = useRouter();
 
   // Hook add exam
   const { addExam } = useAddExam();
@@ -51,13 +54,13 @@ export default function ExamsAddContent({ formId }: { formId: string }) {
   // Form
   const form = useForm<addExamFields>({
     resolver: zodResolver(addExamSchema),
-    // defaultValues: {
-    //   title: "",
-    //   description: "",
-    //   image: "",
-    //   duration: 0,
-    //   diplomaId: "",
-    // },
+    defaultValues: {
+      title: "",
+      description: "",
+      image: "",
+      duration: 0,
+      diplomaId: "",
+    },
   });
 
   // Submit Edit Data
@@ -68,7 +71,7 @@ export default function ExamsAddContent({ formId }: { formId: string }) {
       onSuccess: () => {
         form.reset();
         queryClient.invalidateQueries({ queryKey: ["All Exams"] });
-        redirect("/dashboard/exam-list");
+        router.push("/dashboard/exam-list");
       },
     });
 
@@ -87,154 +90,153 @@ export default function ExamsAddContent({ formId }: { formId: string }) {
     getData();
   }, []);
   return (
-    <>
-      <FormProvider {...form}>
-        {/* Header */}
-        <header className="p-2.5 bg-blue-600 text-base text-white font-semibold">
-          Exam Information
-        </header>
+    <FormProvider {...form}>
+      {/* Header */}
+      <header className="p-2.5 bg-blue-600 text-base text-white font-semibold">
+        Exam Information
+      </header>
 
-        {/* content information */}
-        <form
-          id={formId}
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="content grid grid-cols-2 gap-4 bg-white p-4"
-        >
-          {/* Title Field */}
-          <FieldGroup>
-            <Controller
-              name="title"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid} className="gap-1">
-                  <FieldLabel
-                    className="font-medium text-base text-gray-800"
-                    htmlFor="title"
+      {/* content information */}
+      <form
+        id={formId}
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="content grid grid-cols-2 gap-4 bg-white p-4"
+      >
+        {/* Title Field */}
+        <FieldGroup>
+          <Controller
+            name="title"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid} className="gap-1">
+                <FieldLabel
+                  className="font-medium text-base text-gray-800"
+                  htmlFor="title"
+                >
+                  Title
+                </FieldLabel>
+                <Input
+                  {...field}
+                  id="title"
+                  aria-invalid={fieldState.invalid}
+                  autoComplete="title"
+                  className="text-gray-800"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </FieldGroup>
+
+        {/* Diploma Field */}
+        <FieldGroup>
+          <Controller
+            name="diplomaId"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid} className="gap-1">
+                <FieldLabel
+                  className="font-medium text-base text-gray-800"
+                  htmlFor="diplomaId"
+                >
+                  Diploma
+                </FieldLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger
+                    id="diplomaId"
+                    className="text-gray-800 w-full"
                   >
-                    Title
-                  </FieldLabel>
-                  <Input
-                    {...field}
-                    id="title"
-                    aria-invalid={fieldState.invalid}
-                    autoComplete="title"
-                    className="text-gray-800"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
+                    <SelectValue placeholder="Select a diploma">
+                      {diplomas?.find((d) => d.id === field.value)?.title}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {diplomas?.map((diploma) => (
+                      <SelectItem key={diploma.id} value={diploma.id}>
+                        {diploma.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </FieldGroup>
 
-          {/* Diploma Field */}
-          <FieldGroup>
-            <Controller
-              name="diplomaId"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid} className="gap-1">
-                  <FieldLabel
-                    className="font-medium text-base text-gray-800"
-                    htmlFor="diplomaId"
-                  >
-                    Diploma
-                  </FieldLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger
-                      id="diplomaId"
-                      className="text-gray-800 w-full"
-                    >
-                      <SelectValue placeholder="Select a diploma">
-                        {diplomas?.find((d) => d.id === field.value)?.title}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      {diplomas?.map((diploma) => (
-                        <SelectItem key={diploma.id} value={diploma.id}>
-                          {diploma.title}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
+        {/* Image Field */}
+        <UploadImageField height={`h-25`} />
 
-          {/* Image Field */}
-          <UploadImageField height={`h-25`} />
-
-          {/* Description Field */}
-          <FieldGroup>
-            <Controller
-              name="description"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid} className="gap-1">
-                  <FieldLabel
-                    className="font-medium text-base text-gray-800"
-                    htmlFor="description"
-                  >
-                    Description
-                  </FieldLabel>
-                  <Textarea
-                    {...field}
-                    id="description"
-                    aria-invalid={fieldState.invalid}
-                    autoComplete="description"
-                    className="text-gray-800 resize-none"
-                  />
-                  {/* <Input
+        {/* Description Field */}
+        <FieldGroup>
+          <Controller
+            name="description"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid} className="gap-1">
+                <FieldLabel
+                  className="font-medium text-base text-gray-800"
+                  htmlFor="description"
+                >
+                  Description
+                </FieldLabel>
+                <Textarea
+                  {...field}
+                  id="description"
+                  aria-invalid={fieldState.invalid}
+                  autoComplete="description"
+                  className="text-gray-800 resize-none"
+                />
+                {/* <Input
                   {...field}
                   id="title"
                   aria-invalid={fieldState.invalid}
                   autoComplete="title"
                   className="text-gray-800"
                 /> */}
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </FieldGroup>
 
-          {/* Duration Field */}
-          <FieldGroup>
-            <Controller
-              name="duration"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid} className="gap-1">
-                  <FieldLabel
-                    className="font-medium text-base text-gray-800"
-                    htmlFor="duration"
-                  >
-                    Duration (min)
-                  </FieldLabel>
-                  <Input
-                    {...field}
-                    id="duration"
-                    type="number"
-                    aria-invalid={fieldState.invalid}
-                    autoComplete="duration"
-                    className="text-gray-800"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-        </form>
-      </FormProvider>
-    </>
+        {/* Duration Field */}
+        <FieldGroup>
+          <Controller
+            name="duration"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid} className="gap-1">
+                <FieldLabel
+                  className="font-medium text-base text-gray-800"
+                  htmlFor="duration"
+                >
+                  Duration (min)
+                </FieldLabel>
+                <Input
+                  {...field}
+                  id="duration"
+                  type="number"
+                  aria-invalid={fieldState.invalid}
+                  autoComplete="duration"
+                  className="text-gray-800"
+                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+        </FieldGroup>
+      </form>
+    </FormProvider>
   );
 }
 

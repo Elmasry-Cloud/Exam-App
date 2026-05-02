@@ -5,7 +5,7 @@ import Header from "../header";
 import { forgotField } from "@/features/auth/types/forgot";
 
 interface IEValue {
-  emailValue: forgotField;
+  emailValue: string;
   ref: React.ForwardedRef<HTMLButtonElement>;
   setSucces: (value: boolean) => void;
   setFocusInput: (value: boolean) => void;
@@ -38,7 +38,7 @@ export default function StepTwoForgotPass({
       <div className="info text-base font-normal">
         <p className="text-gray-800">
           We have sent a password reset link to:
-          <span className="text-blue-600">{emailValue.email}.</span>
+          <span className="text-blue-600">{emailValue}.</span>
           {/* user@example.com. */}
         </p>
         <br />

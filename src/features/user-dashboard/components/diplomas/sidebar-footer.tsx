@@ -4,11 +4,11 @@ import { getServerSession } from "next-auth";
 import ProfileSettings from "./profile-settings";
 import { authOptions } from "@/auth";
 import Image from "next/image";
-import { IUser } from "@/features/auth/types/user";
+// import { IUser, IUserData } from "@/features/auth/types/user";
 
-export interface IUserData {
-  data?: IUser;
-}
+// export interface IUserDataa{
+//   data?: IUserData;
+// }
 
 export default async function SidebarFooter() {
   const session = await getServerSession(authOptions);

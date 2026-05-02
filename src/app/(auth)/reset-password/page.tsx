@@ -1,11 +1,15 @@
 import StepThreeForgotPass from "@/features/auth/components/forgot-password/step-three-forgot";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default function ResetPasswordPage() {
   return (
     <main className="flex flex-col items-center justify-center">
       <div className="w-full max-w-113">
-        <StepThreeForgotPass />
+        {/* <StepThreeForgotPass /> */}
+        <Suspense fallback={<div>Loading...</div>}>
+          <StepThreeForgotPass />
+        </Suspense>
 
         {/* side Link */}
         <p className="font-medium text-sm text-gray-500 text-center mt-9">

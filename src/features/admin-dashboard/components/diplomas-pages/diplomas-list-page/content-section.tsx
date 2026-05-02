@@ -15,8 +15,8 @@ export interface IDiplomasProps {
   searchInput?: string;
   setSearchInput?: Dispatch<SetStateAction<string>>;
   setImmutability?: Dispatch<SetStateAction<boolean | null>>;
-  sortBy?: "title" | "createdAt";
-  setSortBy?: Dispatch<SetStateAction<"title" | "createdAt">>;
+  sortBy?: "title" | "createdAt" | "questions";
+  setSortBy?: Dispatch<SetStateAction<"title" | "createdAt" | "questions">>;
   sortOrder?: "asc" | "desc";
   setSortOrder?: Dispatch<SetStateAction<"asc" | "desc">>;
 }

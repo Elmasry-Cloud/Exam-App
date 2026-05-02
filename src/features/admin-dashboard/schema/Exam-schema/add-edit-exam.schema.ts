@@ -6,11 +6,11 @@ export const addExamSchema = z
     title: z.string().nonempty("Title is required"),
     description: z.string().nonempty("Description is required"),
     image: z.string().nonempty("Image is required"),
-    duration: z
-      .string()
-      .nonempty("Duration is required")
-      .transform((val) => Number(val)),
-    // duration: z.number(),
+    // duration: z
+    //   .string()
+    //   .nonempty("Duration is required")
+    //   .transform((val) => Number(val)),
+    duration: z.number().min(1, "Duration is required"),
     diplomaId: z.string().nonempty("Diploma is required"),
   })
   .strict();
@@ -25,7 +25,7 @@ export const editExamSchema = z
     //   .string()
     //   .nonempty("Duration is required")
     //   .transform((val) => Number(val)),
-    duration: z.coerce.number().positive(),
+    duration: z.number(),
     diplomaId: z.string().nonempty("Diploma is required"),
   })
   .strict()

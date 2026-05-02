@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import deleteAccount from "../../apis/account-apis/delete-acc.api";
 import PhoneNumber from "@/features/auth/components/register/phone-input";
 import LayoutDeleteAcc from "./layout-delete-acc";
+import { isValidPhoneNumber } from "react-phone-number-input";
 
 interface ISessionProps {
   session: Session | null;
@@ -50,12 +51,26 @@ export default function AccountForm({ session, update }: ISessionProps) {
 
   // Change Email fun sub
   const submitChange = async () => {
-    const isValid = await form.trigger(["firstName", "lastName", "phone"]);
+    // const isValid = await form.trigger(["firstName", "lastName", "phone"]);
+
+    const formatPhone = (phone: string) => {
+      // Converts +201551234567 → 01551234567
+      if (phone.startsWith("+20")) {
+        return "0" + phone.slice(3);
+      }
+      return phone;
+    };
+
+    const isValid = await form.trigger(["firstName", "lastName"]);
     if (!isValid) return;
+
     const fieldsUpdated = {
       firstName: form.getValues("firstName"),
       lastName: form.getValues("lastName"),
-      phone: phone,
+      // phone: phone,
+      // ...(phone && isValidPhoneNumber(phone) && { phone }),
+      ...(phone && isValidPhoneNumber(phone) && { phone: formatPhone(phone) }),
+      // ...(phone && phone.trim().length > 0 && { phone }),
     };
     changeProfileData(fieldsUpdated, {
       onSuccess(data) {
@@ -92,20 +107,6 @@ export default function AccountForm({ session, update }: ISessionProps) {
   function changeEmail() {
     setShowChangeEmail(true);
   }
-
-  // useEffect(() => {
-  //   if (session?.user && status === "authenticated") {
-  //     form.reset({
-  //       username: session.user.username,
-  //       email: session.user.email,
-  //       firstName: session.user.firstName,
-  //       lastName: session.user.lastName,
-  //       phone: session.user.phone || "",
-  //       password: "",
-  //       confirmPassword: "",
-  //     });
-  //   }
-  // }, [session, status]);
 
   return (
     <>
@@ -239,7 +240,12 @@ export default function AccountForm({ session, update }: ISessionProps) {
         </FieldGroup>
 
         {/* Phone */}
-        <PhoneNumber phone={phone} setPhone={setPhone} />
+        <PhoneNumber
+          phone={phone}
+          payload={session?.user.phone ?? ""}
+          // setPhone={setPhone}
+          setPhone={(value) => setPhone(value ?? "")}
+        />
 
         {/* Buttons */}
         <Field orientation="horizontal" className="flex gap-3.5 mt-4">

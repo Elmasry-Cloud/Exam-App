@@ -6,14 +6,17 @@ import getQuestionsSingelExam from "@/features/admin-dashboard/apis/questions-pa
 import { useMemo, useState } from "react";
 import SkilitonViewExamQue from "./skiliton-view-exam-que";
 
-export default function ExamsQueTaple({ examId }: { examId: string }) {
+export default function ExamsQueTaple({ examId }: { examId?: string }) {
   // State For Diploma Taple Sort
-  const [sortBy, setSortBy] = useState<"title" | "createdAt">("createdAt");
+  const [sortBy, setSortBy] = useState<"title" | "createdAt" | "questions">(
+    "createdAt",
+  );
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-  const { data } = useQuery({
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: ["Exam Questions", examId, sortBy, sortOrder],
-    queryFn: () => getQuestionsSingelExam({ examId, sortBy, sortOrder }),
+    queryFn: () =>
+      getQuestionsSingelExam({ examId: examId!, sortBy, sortOrder }),
   });
 
   const questions = useMemo(() => data?.payload.questions, [data]);
@@ -21,7 +24,7 @@ export default function ExamsQueTaple({ examId }: { examId: string }) {
 
   return (
     <>
-      {questions && questions?.length > 0 && (
+      {!isLoading && (
         <table className="w-full text-left">
           {/* Taple Head */}
           <thead className="bg-gray-200 border-b text-gray-800">
@@ -34,14 +37,15 @@ export default function ExamsQueTaple({ examId }: { examId: string }) {
             </tr>
           </thead>
 
-          {/* Taple Body */}
-          <tbody className="bg-white">
-            {/* Skiliton */}
-            {questions && questions?.length < 0 && <SkilitonViewExamQue />}
+          {/* Skiliton */}
+          {isFetching && <SkilitonViewExamQue />}
 
-            {/* Questions items */}
-            {questions &&
-              questions.map((question) => (
+          {/* Taple Body */}
+          {!isFetching && questions && (
+            <tbody className="bg-white">
+              {/* Questions items */}
+
+              {questions.map((question) => (
                 <tr key={question.id} className="border-b border-b-gray-100">
                   <td className="py-2.5 px-4 font-medium text-sm text-gray-800">
                     {question.text}
@@ -55,7 +59,8 @@ export default function ExamsQueTaple({ examId }: { examId: string }) {
                   </td>
                 </tr>
               ))}
-          </tbody>
+            </tbody>
+          )}
         </table>
       )}
     </>

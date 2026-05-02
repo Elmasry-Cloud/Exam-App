@@ -1,7 +1,6 @@
 import { authOptions } from "@/auth";
 import { USER_ROLES } from "@/features/auth/constant/user-constant";
 import { getServerSession } from "next-auth";
-import { cookies, headers } from "next/headers";
 
 export default async function DashboardLayout({
   children,
@@ -16,7 +15,6 @@ export default async function DashboardLayout({
   const session = await getServerSession(authOptions);
   const role = session?.user.role === USER_ROLES.ADMIN;
 
-
   return (
     <>
       {/* // grid-cols-[23rem_1fr] */}
@@ -27,7 +25,8 @@ export default async function DashboardLayout({
       {/* <DashSidebar /> */}
       <div className=" bg-gray-50">
         {/* {children} */}
-        {role && role ? admin : user}
+        {/* {role && role ? admin : user} */}
+        {role ? admin : user}
         {/* {role && !pathname.startsWith("/dashboard") ? admin : user} */}
         {/* {ad && ad ? admin : user} */}
       </div>

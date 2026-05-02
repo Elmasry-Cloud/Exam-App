@@ -175,7 +175,11 @@ export default function StepThreeRegister({
         </FieldGroup>
 
         {/* Phone */}
-        <PhoneNumber phone={phone} setPhone={setPhone} />
+        <PhoneNumber
+          phone={phone}
+          // setPhone={setPhone}
+          setPhone={(value) => setPhone(value ?? "")}
+        />
 
         {/* Button */}
         <Button

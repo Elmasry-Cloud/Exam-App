@@ -10,6 +10,7 @@ import ExamResult from "./exam-result";
 import useSubmissionsAction from "../../hooks/diplomas-hooks/use-submissions";
 import GetQuestions from "../../apis/diplomas-apis/questions.api";
 import ErrorMessage from "@/features/auth/components/login/error-message";
+import { IAnswer, IQuestion } from "../../types/questions-exam";
 
 interface IQuestionsInfo {
   id: string;
@@ -67,7 +68,7 @@ export default function QuestionsInfo({
     if (currentQuestion === questions?.payload.questions.length - 1) {
       const formattedAnswers = {
         examId: id,
-        answers: questions?.payload.questions.map((q) => ({
+        answers: questions?.payload.questions.map((q: IQuestion) => ({
           questionId: q.id,
           answerId: allAnswers[q.id] || "",
         })),
@@ -110,7 +111,7 @@ export default function QuestionsInfo({
   function handleTimeUp() {
     const formattedAnswers = {
       examId: id,
-      answers: questions?.payload.questions.map((q) => ({
+      answers: questions?.payload.questions.map((q: IQuestion) => ({
         questionId: q.id,
         answerId: allAnswers[q.id] || "",
         // answerId: questions?.payload.questions
@@ -188,7 +189,7 @@ export default function QuestionsInfo({
               {/* Answer */}
               <div className="answers flex flex-col gap-2.5 mb-10">
                 {questions?.payload?.questions[currentQuestion].answers.map(
-                  (answer) => (
+                  (answer: IAnswer) => (
                     <div
                       key={answer.id}
                       onClick={() =>

@@ -37,6 +37,6 @@ export default async function registerAPI(email: IRegisterFields) {
   //     });
   //   }
 
-  console.log(data);
+  // console.log(data);
   return data;
 }

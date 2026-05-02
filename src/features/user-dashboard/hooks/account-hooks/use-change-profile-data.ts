@@ -8,7 +8,7 @@ export default function useChangeProfileDataAction() {
     //   console.log(data, "helo");
     // },
     // onError: (error) => {
-    //   console.log(error);
+    //   console.log(error.message);
     // },
   });
   return { data, error, isPending, changeProfileData: mutate };

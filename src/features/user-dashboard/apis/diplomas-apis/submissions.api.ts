@@ -1,15 +1,18 @@
 "use server";
 import getNextAuthToken from "@/shared/lib/utils/get-next-auth-token";
 
-interface IAnswers {
-  answerId: string;
+interface IAnswer {
   questionId: string;
+  answerId: string;
+}
+
+interface ISubmission {
   examId: string;
-  answers: string;
+  answers: IAnswer[];
   startedAt: string;
 }
 
-export default async function submissionsAnswers(answers: IAnswers[]) {
+export default async function submissionsAnswers(answers: ISubmission) {
   const jwtToken = await getNextAuthToken();
   const token = jwtToken?.token;
 
