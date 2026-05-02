@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Img from "@/images/dip.png";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { IExamData } from "@/features/user-dashboard/types/exams";

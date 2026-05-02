@@ -1,6 +1,6 @@
 import Image from "next/image";
-import ImageLogo from "@/Images/Final Logo 1.png";
-import ImageFile from "@/Images/Vector.png";
+import ImageLogo from "@/images/Final Logo 1.png";
+import ImageFile from "@/images/Vector.png";
 export default function SidebarHeader() {
   return (
     <div className="logo mb-14 w-48 flex flex-col gap-2.5">

@@ -1,4 +1,4 @@
-import ImageAcc from "@/Images/avatar.jpg";
+import ImageAcc from "@/images/avatar.jpg";
 
 import { getServerSession } from "next-auth";
 import ProfileSettings from "./profile-settings";
